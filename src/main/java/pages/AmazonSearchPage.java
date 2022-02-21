@@ -2,11 +2,17 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
 
 public class AmazonSearchPage {
     private String searchBox = "//input[@id='twotabsearchtextbox']";
     private String searchButton = "//input[@id='nav-search-submit-button']";
-    private String thirdResult = "//*[@id='search']/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/div/div/div/div/div[1]/div/div[2]";
+    private String thirdResult = "(//div[@data-index='3' or @data-index='8']//a)[2]";
     private String addToCartButton = "//input[@id='add-to-cart-button']";
     private String addedMessageText = "//*[contains(text(), 'Agregado al carrito')]";
     WebDriver driver;
@@ -16,7 +22,7 @@ public class AmazonSearchPage {
     }
 
     public void navigateToAmazon(){
-        driver.navigate().to("www.amazon.com");
+        driver.navigate().to("https://www.amazon.com/");
     }
 
     public void goToPage(String linkText){
@@ -32,7 +38,10 @@ public class AmazonSearchPage {
     }
 
     public void pickThirdItem(){
-        driver.findElement(By.xpath(thirdResult)).click();
+        WebElement firstResult = new WebDriverWait(driver, Duration.ofSeconds(15))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath(thirdResult)));
+
+       driver.findElement(By.xpath(thirdResult)).click();
     }
 
     public void addtoCart(){
